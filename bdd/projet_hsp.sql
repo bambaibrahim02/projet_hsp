@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 14 sep. 2021 à 08:59
+-- Généré le :  mar. 21 sep. 2021 à 09:47
 -- Version du serveur :  5.7.26
 -- Version de PHP :  7.2.18
 
@@ -19,8 +19,33 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `bdd_hsp`
+-- Base de données :  `projet_hsp`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `administrateur`
+--
+
+DROP TABLE IF EXISTS `administrateur`;
+CREATE TABLE IF NOT EXISTS `administrateur` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(40) NOT NULL,
+  `prenom` varchar(40) NOT NULL,
+  `mail` varchar(30) NOT NULL,
+  `mdp` varchar(30) NOT NULL,
+  `etat_compte` int(1) NOT NULL,
+  `derniere_connexion` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `administrateur`
+--
+
+INSERT INTO `administrateur` (`id`, `nom`, `prenom`, `mail`, `mdp`, `etat_compte`, `derniere_connexion`) VALUES
+(1, 'LIGNANI', 'Quentin', 'qlignani@gmail.com', '1234', 1, '2021-09-21');
 
 -- --------------------------------------------------------
 
@@ -35,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `diagnostic` (
   `symptomes` longtext COLLATE utf8_bin NOT NULL,
   `date` date NOT NULL,
   `niveau_urgence` varchar(10) COLLATE utf8_bin NOT NULL,
+  `id_medec` varchar(10) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_ut_diagnostic` (`id_utilisateurs`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -55,9 +81,36 @@ CREATE TABLE IF NOT EXISTS `dossier_admission` (
   `numero_securite_social` int(40) NOT NULL,
   `option` varchar(40) COLLATE utf8_bin NOT NULL,
   `regime_specifique` varchar(40) COLLATE utf8_bin NOT NULL,
+  `id_medecins` varchar(10) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_utilisateurs` (`id_utilisateurs`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `medecin`
+--
+
+DROP TABLE IF EXISTS `medecin`;
+CREATE TABLE IF NOT EXISTS `medecin` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(40) NOT NULL,
+  `prenom` varchar(40) NOT NULL,
+  `mail` varchar(30) NOT NULL,
+  `mdp` varchar(30) NOT NULL,
+  `specialite` varchar(30) NOT NULL,
+  `etat_compte` int(1) NOT NULL,
+  `derniere_connexion` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `medecin`
+--
+
+INSERT INTO `medecin` (`id`, `nom`, `prenom`, `mail`, `mdp`, `specialite`, `etat_compte`, `derniere_connexion`) VALUES
+(1, 'LIGNANI', 'Quentin', 'q.lignani@lprs.fr', '1234', 'Medecin generaliste', 1, '2021-09-21');
 
 -- --------------------------------------------------------
 
@@ -72,24 +125,11 @@ CREATE TABLE IF NOT EXISTS `rendez-vous` (
   `date` int(10) NOT NULL,
   `heure` int(10) NOT NULL,
   `salle` varchar(10) COLLATE utf8_bin NOT NULL,
+  `id_medecins` int(10) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `id_ut` (`id_utilisateurs`)
+  KEY `id_ut` (`id_utilisateurs`),
+  KEY `id_medecin` (`id_medecins`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `salle`
---
-
-DROP TABLE IF EXISTS `salle`;
-CREATE TABLE IF NOT EXISTS `salle` (
-  `id` int(10) NOT NULL,
-  `id_rendez-vous` int(10) NOT NULL,
-  `libelle` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_rendez-vous` (`id_rendez-vous`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -102,9 +142,8 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `id` int(20) NOT NULL,
   `nom` varchar(40) COLLATE utf8_bin NOT NULL,
   `prenom` varchar(40) COLLATE utf8_bin NOT NULL,
-  `mail` varchar(40) COLLATE utf8_bin NOT NULL,
+  `email` varchar(40) COLLATE utf8_bin NOT NULL,
   `mdp` varchar(40) COLLATE utf8_bin NOT NULL,
-  `role` varchar(10) COLLATE utf8_bin NOT NULL,
   `etat_compte` tinyint(1) NOT NULL,
   `derniere_connexion` date NOT NULL,
   PRIMARY KEY (`id`)
@@ -130,13 +169,8 @@ ALTER TABLE `dossier_admission`
 -- Contraintes pour la table `rendez-vous`
 --
 ALTER TABLE `rendez-vous`
+  ADD CONSTRAINT `id_medecin` FOREIGN KEY (`id_medecins`) REFERENCES `medecin` (`id`),
   ADD CONSTRAINT `id_ut` FOREIGN KEY (`id_utilisateurs`) REFERENCES `utilisateurs` (`id`);
-
---
--- Contraintes pour la table `salle`
---
-ALTER TABLE `salle`
-  ADD CONSTRAINT `id_rendez-vous` FOREIGN KEY (`id_rendez-vous`) REFERENCES `rendez-vous` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

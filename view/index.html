@@ -94,8 +94,9 @@
         </ul>
       </nav><!-- .nav-menu -->
 
-      <a href="#appointment" class="appointment-btn scrollto">Make an Appointment</a>
-
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Se connecter
+</button>
     </div>
   </header><!-- End Header -->
 
@@ -109,7 +110,53 @@
   </section><!-- End Hero -->
 
   <main id="main">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Connexion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="class/cible_connexion.php">
+                      <div class="row">
+                        <div class="col-lg-12 no-pdd">
+                          <div class="sn-field">
+                            <input type="text" name="email" required placeholder="Adresse éléctronique">
+                            <i class="la la-user"></i>
+                          </div>
+                        </div>
+                        <div class="col-lg-12 no-pdd">
+                          <div class="sn-field">
+                            <input type="password" name="mdp" required placeholder="Mot de passe">
+                            <i class="la la-lock"></i>
+                          </div>
+                        </div>
+                        <div class="col-lg-12 no-pdd">
+                          <div class="checky-sec">
+                            <a href="mdp_oublie.php" title="">Mot de passe oublié ?</a>
+                          </div>
+                        </div>
+                        <div class="col-lg-12 no-pdd">
+                          <button type="submit" value="submit">Se connecter</button>
+                        </div>
+                        <?php
+                        if (isset($_SESSION['erreur_co']))
+                        {
+                          echo "<div style='color:#ff0000'>
+                          Mauvais Mail ou mot de passe</div>";
 
+                          unset($_SESSION['erreur_co']);
+                        }
+                        ?>
+                      </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
     <!-- ======= Why Us Section ======= -->
     <section id="why-us" class="why-us">
       <div class="container">
