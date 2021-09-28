@@ -24,6 +24,7 @@ class model
     private $specialite;
     private $heure;
     private $salle;
+    private $tg;
 
     public function __construct(array $donnees)
     {
