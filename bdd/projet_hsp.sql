@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 21 sep. 2021 à 09:47
+-- Généré le :  mar. 28 sep. 2021 à 07:30
 -- Version du serveur :  5.7.26
 -- Version de PHP :  7.2.18
 
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `dossier_admission` (
   `date_naissance` date NOT NULL,
   `adresse_postale` varchar(40) COLLATE utf8_bin NOT NULL,
   `mutuelle` varchar(40) COLLATE utf8_bin NOT NULL,
-  `numero_securite_social` int(40) NOT NULL,
+  `numero_secu` int(40) NOT NULL,
   `option` varchar(40) COLLATE utf8_bin NOT NULL,
   `regime_specifique` varchar(40) COLLATE utf8_bin NOT NULL,
   `id_medecins` varchar(10) COLLATE utf8_bin NOT NULL,
@@ -130,6 +130,25 @@ CREATE TABLE IF NOT EXISTS `rendez-vous` (
   KEY `id_ut` (`id_utilisateurs`),
   KEY `id_medecin` (`id_medecins`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `urgentiste`
+--
+
+DROP TABLE IF EXISTS `urgentiste`;
+CREATE TABLE IF NOT EXISTS `urgentiste` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(40) NOT NULL,
+  `prenom` varchar(40) NOT NULL,
+  `mail` varchar(30) NOT NULL,
+  `mdp` varchar(30) NOT NULL,
+  `specialite` varchar(30) NOT NULL,
+  `etat_compte` int(1) NOT NULL,
+  `derniere_connexion` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
